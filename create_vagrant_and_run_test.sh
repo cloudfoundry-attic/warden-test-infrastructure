@@ -56,4 +56,4 @@ vagrant ssh-config > ssh_config
 ssh -F ssh_config default 'mkdir -p ~/workspace'
 rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ default:workspace/.git
 ssh -F ssh_config default 'cd ~/workspace && git checkout .'
-ssh -F ssh_config "cd ~/workspace && ./.travis.run"
+ssh -F ssh_config default 'cd ~/workspace && ./.travis.run'
