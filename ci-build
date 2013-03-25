@@ -12,7 +12,7 @@ def sh(cmd)
 end
 
 Dir.mktmpdir do |tmpdir|
-  FileUtils.copy("test.sh", tmpdir)
+  FileUtils.copy("*.sh", tmpdir)
   Dir.chdir(tmpdir) do
     begin
       Timeout.timeout(BUILD_TIMEOUT_IN_SECONDS) do
