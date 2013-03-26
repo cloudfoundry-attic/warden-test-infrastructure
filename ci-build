@@ -23,6 +23,8 @@ Dir.mktmpdir do |tmpdir|
       puts 'Build took too long, killing the VM'
     ensure
       sh('vagrant destroy --force')
+      puts 'Destroyed the vagrant box, vagrant status: '
+      sh('vagrant status')
     end
   end
 end
