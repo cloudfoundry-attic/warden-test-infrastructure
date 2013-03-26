@@ -1,5 +1,5 @@
 #!/bin/bash
-set -u -e -x
+set -e -x
 
 if [[ -z ${WORKSPACE-} ]]; then
   exit 1
@@ -57,9 +57,6 @@ ssh -F ssh_config default 'mkdir -p ~/workspace'
 rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ default:workspace/.git
 rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh default:workspace/
 ssh -F ssh_config default 'cd ~/workspace && git checkout .'
-echo $WARDENIZED_SERVICE
-echo $REQUIRE_PACKAGE
-echo $FOLDER_NAME
 
 vagrant ssh -c "cd ~/workspace &&                  \
   env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
