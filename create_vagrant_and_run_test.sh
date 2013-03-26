@@ -34,6 +34,7 @@ else
         chef.add_recipe 'git'
         chef.add_recipe 'unzip'
         chef.add_recipe 'rvm::multi'
+        chef.add_recipe 'sqlite'
         chef.add_recipe 'warden'
         chef.json = {
           "rvm" => {
@@ -48,7 +49,6 @@ EOF
 
   vagrant up
   vagrant package default --output ~/boxes/ci_with_warden_prereqs.box
-  mv ~/boxes/ci_with_warden_prereqs.box ~/boxes/.
   vagrant up
 fi
 
