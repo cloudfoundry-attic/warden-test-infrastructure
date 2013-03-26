@@ -55,6 +55,7 @@ fi
 vagrant ssh-config > ssh_config
 ssh -F ssh_config default 'mkdir -p ~/workspace'
 rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ default:workspace/.git
+rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh default:workspace/
 ssh -F ssh_config default 'cd ~/workspace && git checkout .'
 echo $WARDENIZED_SERVICE
 echo $REQUIRE_PACKAGE
