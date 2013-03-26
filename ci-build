@@ -22,7 +22,7 @@ Dir.mktmpdir do |tmpdir|
     rescue Timeout
       puts 'Build took too long, killing the VM'
     ensure
-      sh('vagrant destroy --force')
+      # sh('vagrant destroy --force')
     end
   end
 end

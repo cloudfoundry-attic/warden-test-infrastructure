@@ -56,4 +56,8 @@ vagrant ssh-config > ssh_config
 ssh -F ssh_config default 'mkdir -p ~/workspace'
 rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ default:workspace/.git
 ssh -F ssh_config default 'cd ~/workspace && git checkout .'
+echo $WARDENIZED_SERVICE
+echo $REQUIRE_PACKAGE
+echo $FOLDER_NAME
+
 vagrant ssh -c 'cd ~/workspace && env WARDENIZED_SERVICE=$WARDENIZED_SERVICE REQUIRE_PACKAGE=$REQUIRE_PACKAGE FOLDER_NAME=$FOLDER_NAME ./.travis.run'
