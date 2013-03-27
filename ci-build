@@ -3,7 +3,7 @@ require 'tmpdir'
 require 'timeout'
 require 'fileutils'
 
-BUILD_TIMEOUT_IN_SECONDS = 1200
+BUILD_TIMEOUT_IN_SECONDS = 2400
 
 def sh(cmd)
   ok = system(cmd)
