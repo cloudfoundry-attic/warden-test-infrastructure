@@ -15,6 +15,7 @@ if [[ -f ~/boxes/ci_with_warden_prereqs.box ]]; then
       config.vm.box = "ci_with_warden_prereqs"
       config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
     end
+  cat Vagrantfile
 EOF
   vagrant up
 else
@@ -50,16 +51,17 @@ else
       end
     end
 EOF
-
+  cat Vagrantfile
   vagrant up
   vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
+  vagrant box remove ci_with_warden_prereqs  # this will fail the first time, that's okay
   vagrant up
 fi
 
 vagrant ssh-config > ssh_config
 ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
-rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ $VM_NAME:workspace/.git
-rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh $VM_NAME:workspace/
+rsync -rq --rsh="ssh -F ssh_config" $WORKSPACE/.git/ $VM_NAME:workspace/.git
+rsync -rq --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh $VM_NAME:workspace/
 ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout .'
 
 vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
