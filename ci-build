@@ -4,7 +4,8 @@ require 'timeout'
 require 'fileutils'
 
 BUILD_TIMEOUT_IN_SECONDS = 2400
-MY_PATH = File.expand_path File.dirname(__FILE__)
+TEST_INFRA_PATH = File.expand_path File.dirname(__FILE__)
+BUILD_TO_RUN_PATH = Dir.pwd
 
 def sh(cmd)
   ok = system(cmd)
@@ -12,14 +13,15 @@ def sh(cmd)
   ok
 end
 
+
 Dir.mktmpdir do |tmpdir|
-  FileUtils.copy("#{MY_PATH}/create_vagrant_and_run_test.sh", tmpdir)
-  FileUtils.copy("#{MY_PATH}/start_warden.sh", tmpdir)
+  FileUtils.copy("#{TEST_INFRA_PATH}/create_vagrant_and_run_test.sh", tmpdir)
+  FileUtils.copy("#{TEST_INFRA_PATH}/start_warden.sh", tmpdir)
   puts "Running vagrant in a temporary folder: #{tmpdir}"
   Dir.chdir(tmpdir) do
     begin
       Timeout.timeout(BUILD_TIMEOUT_IN_SECONDS) do
-        sh("bash -x ./create_vagrant_and_run_test.sh")
+        sh("bash -x ./create_vagrant_and_run_test.sh '#{BUILD_TO_RUN_PATH}' '#{TEST_INFRA_PATH}'")
       end
     rescue Timeout
       puts 'Build took too long, killing the VM'

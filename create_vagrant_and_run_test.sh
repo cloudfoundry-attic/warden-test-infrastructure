@@ -6,6 +6,8 @@ if [[ -z ${WORKSPACE-} ]]; then
 fi
 
 VM_NAME="vm_for_$BUILD_TAG"
+BUILD_TO_RUN_PATH=$1
+TEST_INFRA_PATH=$2
 
 if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
   if [[ ! -d travis-cookbooks ]]; then
@@ -60,8 +62,8 @@ vagrant up
 
 vagrant ssh-config > ssh_config
 ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
-rsync -rq --rsh="ssh -F ssh_config" $WORKSPACE/.git/ $VM_NAME:workspace/.git
-rsync -rq --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh $VM_NAME:workspace/
+rsync -rq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/.git/ $VM_NAME:workspace/.git
+rsync -rq --rsh="ssh -F ssh_config" $TEST_INFRA_PATH/start_warden.sh $VM_NAME:workspace/
 ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout .'
 
 vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
