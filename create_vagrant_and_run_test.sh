@@ -5,12 +5,15 @@ if [[ -z ${WORKSPACE-} ]]; then
   exit 1
 fi
 
+VM_NAME="vm_for_$BUILD_TAG"
+
 if [[ -f ~/boxes/ci_with_warden_prereqs.box ]]; then
-  cat <<-EOF >Vagrantfile
-    Vagrant::Config.run do |config|
+  cat <<EOF >Vagrantfile
+    Vagrant.configure("2") do |config|
+      config.ssh.username = "travis"
+      config.vm.define "$VM_NAME" # give the VM a unique name
       config.vm.box = "ci_with_warden_prereqs"
       config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
-      config.ssh.username = "travis"
     end
 EOF
   vagrant up
@@ -25,8 +28,10 @@ else
   )
 
   cp -r $WORKSPACE/ci-cookbooks .
-  cat <<-EOF > Vagrantfile
-    Vagrant::Config.run do |config|
+  cat <<EOF > Vagrantfile
+    Vagrant.configure("2") do |config|
+      config.ssh.username = "travis"
+      config.vm.define "$VM_NAME" # give the VM a unique name
       config.vm.box = "travis-base"
       config.vm.box_url = "http://files.travis-ci.org/boxes/bases/precise64_base_v2.box"
       config.vm.provision :chef_solo do |chef|
@@ -43,22 +48,21 @@ else
           }
         }
       end
-      config.ssh.username = "travis"
     end
 EOF
 
   vagrant up
-  vagrant package default --output ~/boxes/ci_with_warden_prereqs.box
+  vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
   vagrant up
 fi
 
 vagrant ssh-config > ssh_config
-ssh -F ssh_config default 'mkdir -p ~/workspace'
-rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ default:workspace/.git
-rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh default:workspace/
-ssh -F ssh_config default 'cd ~/workspace && git checkout .'
+ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
+rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/.git/ $VM_NAME:workspace/.git
+rsync -rv --rsh="ssh -F ssh_config" $WORKSPACE/start_warden.sh $VM_NAME:workspace/
+ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout .'
 
-vagrant ssh -c "cd ~/workspace &&                  \
+vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
   env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
       REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
       FOLDER_NAME=$FOLDER_NAME                     \
