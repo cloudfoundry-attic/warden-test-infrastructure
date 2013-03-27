@@ -19,7 +19,7 @@ if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
     git checkout 77605d7405dd97e1b418965d3d8fa481030d6117
   )
 
-  cp -r $WORKSPACE/ci-cookbooks .
+  cp -r $TEST_INFRA_PATH/ci-cookbooks .
   cat <<EOF > Vagrantfile
     Vagrant.configure("2") do |config|
       config.ssh.username = "travis"
