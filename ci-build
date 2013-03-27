@@ -4,6 +4,7 @@ require 'timeout'
 require 'fileutils'
 
 BUILD_TIMEOUT_IN_SECONDS = 2400
+MY_PATH = File.expand_path File.dirname(__FILE__)
 
 def sh(cmd)
   ok = system(cmd)
@@ -12,8 +13,8 @@ def sh(cmd)
 end
 
 Dir.mktmpdir do |tmpdir|
-  FileUtils.copy("create_vagrant_and_run_test.sh", tmpdir)
-  FileUtils.copy("start_warden.sh", tmpdir)
+  FileUtils.copy("#{MY_PATH}/create_vagrant_and_run_test.sh", tmpdir)
+  FileUtils.copy("#{MY_PATH}/start_warden.sh", tmpdir)
   puts "Running vagrant in a temporary folder: #{tmpdir}"
   Dir.chdir(tmpdir) do
     begin
