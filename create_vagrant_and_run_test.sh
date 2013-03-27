@@ -68,6 +68,4 @@ vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
   env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
       REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
       FOLDER_NAME=$FOLDER_NAME                     \
-      AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID         \
-      AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     ./.travis.run"
