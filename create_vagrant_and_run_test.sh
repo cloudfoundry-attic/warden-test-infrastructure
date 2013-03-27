@@ -7,18 +7,7 @@ fi
 
 VM_NAME="vm_for_$BUILD_TAG"
 
-if [[ -f ~/boxes/ci_with_warden_prereqs.box ]]; then
-  cat <<EOF >Vagrantfile
-    Vagrant.configure("2") do |config|
-      config.ssh.username = "travis"
-      config.vm.define "$VM_NAME" # give the VM a unique name
-      config.vm.box = "ci_with_warden_prereqs"
-      config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
-    end
-  cat Vagrantfile
-EOF
-  vagrant up
-else
+if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
   if [[ ! -d travis-cookbooks ]]; then
     git clone https://github.com/travis-ci/travis-cookbooks.git
   fi
@@ -55,8 +44,19 @@ EOF
   vagrant up
   vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
   vagrant box remove ci_with_warden_prereqs  # this will fail the first time, that's okay
-  vagrant up
+  vagrant destroy --force
 fi
+
+cat <<EOF >Vagrantfile
+  Vagrant.configure("2") do |config|
+    config.ssh.username = "travis"
+    config.vm.define "$VM_NAME" # give the VM a unique name
+    config.vm.box = "ci_with_warden_prereqs"
+    config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
+  end
+EOF
+cat Vagrantfile
+vagrant up
 
 vagrant ssh-config > ssh_config
 ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
