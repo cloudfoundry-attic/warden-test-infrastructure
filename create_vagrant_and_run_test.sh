@@ -1,14 +1,18 @@
 #!/bin/bash
 set -e -x
 
-if [[ -z ${WORKSPACE-} ]]; then
-  exit 1
+if [ -z $BUILD_TAG ]; then
+  echo 'Missing $BUILD_TAG variable, assuming we are not running in jenkins'
+  BUILD_TAG=`date +%s`
+  echo "Generated build_tag: #{BUILD_TAG}"
 fi
 
 VM_NAME="vm_for_$BUILD_TAG"
 BUILD_TO_RUN_PATH=$1
 TEST_INFRA_PATH=$2
+TMP_FOLDER_PATH=`pwd`
 
+mkdir -p ~/boxes
 if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
   if [[ ! -d travis-cookbooks ]]; then
     git clone https://github.com/travis-ci/travis-cookbooks.git
@@ -68,8 +72,14 @@ rsync -rq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/.git/ $VM_NAME:workspace/
 rsync -rq --rsh="ssh -F ssh_config" $TEST_INFRA_PATH/start_warden.sh $VM_NAME:workspace/
 ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout .'
 
-vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
-  env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
-      REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
-      FOLDER_NAME=$FOLDER_NAME                     \
+echo "Your vagrant box is now provisioned in folder $TMP_FOLDER_PATH! Don't forget to vagrant destroy it eventually."
+echo "To connect: vagrant ssh $VM_NAME"
+echo "To destroy: vagrant destroy $VM_NAME"
+
+if [ -z $NOTEST ]; then
+  vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
+    env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
+    REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
+    FOLDER_NAME=$FOLDER_NAME                     \
     ./.travis.run"
+fi

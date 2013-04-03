@@ -14,21 +14,24 @@ def sh(cmd)
 end
 
 
-Dir.mktmpdir do |tmpdir|
-  FileUtils.copy("#{TEST_INFRA_PATH}/create_vagrant_and_run_test.sh", tmpdir)
-  FileUtils.copy("#{TEST_INFRA_PATH}/start_warden.sh", tmpdir)
-  puts "Running vagrant in a temporary folder: #{tmpdir}"
-  Dir.chdir(tmpdir) do
-    begin
-      Timeout.timeout(BUILD_TIMEOUT_IN_SECONDS) do
-        sh("bash -x ./create_vagrant_and_run_test.sh '#{BUILD_TO_RUN_PATH}' '#{TEST_INFRA_PATH}'")
-      end
-    rescue Timeout
-      puts 'Build took too long, killing the VM'
-    ensure
+tmpdir = Dir.mktmpdir
+FileUtils.copy("#{TEST_INFRA_PATH}/create_vagrant_and_run_test.sh", tmpdir)
+FileUtils.copy("#{TEST_INFRA_PATH}/start_warden.sh", tmpdir)
+puts "Running vagrant in a temporary folder: #{tmpdir}"
+Dir.chdir(tmpdir) do
+  begin
+    Timeout.timeout(BUILD_TIMEOUT_IN_SECONDS) do
+      sh("bash -x ./create_vagrant_and_run_test.sh '#{BUILD_TO_RUN_PATH}' '#{TEST_INFRA_PATH}'")
+    end
+  rescue Timeout
+    puts 'Build took too long, killing the VM'
+  ensure
+    if ENV["NODESTROY"]
+      puts "Skipping vagrant destroy"
+    else
       sh('vagrant destroy --force')
       puts 'Destroyed the vagrant box, vagrant status: '
-      sh('vagrant status')
     end
+    sh('vagrant status')
   end
 end
