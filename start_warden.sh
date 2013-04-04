@@ -22,7 +22,7 @@ set -e -u -x
   # Download and extract the warden rootfs
   rvmsudo bundle exec rake setup:bin[config/linux.yml]
   mkdir -p /tmp/warden/rootfs
-  curl -s https://s3.amazonaws.com/cf-stacks/lucid64.latest.tgz | tar xvf - -C /tmp/warden/rootfs
+  curl -s https://s3.amazonaws.com/cf-stacks/lucid64.latest.tgz | tar xzf - -C /tmp/warden/rootfs
 
   rvmsudo bundle exec rake warden:start[config/linux.yml] --trace >/dev/null 2>&1 &
 )
