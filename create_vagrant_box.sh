@@ -46,7 +46,7 @@ cat <<EOF > Vagrantfile
 EOF
 cat Vagrantfile
 vagrant up
-rm ~/boxes/ci_with_warden_prereqs.box
+rm -f ~/boxes/ci_with_warden_prereqs.box
 vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
 vagrant box remove ci_with_warden_prereqs virtualbox  # this will fail the first time, that's okay
 vagrant destroy --force
