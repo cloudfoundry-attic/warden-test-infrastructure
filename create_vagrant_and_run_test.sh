@@ -38,6 +38,7 @@ if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
         chef.add_recipe 'sqlite'
         chef.add_recipe 'mysql::server'
         chef.add_recipe 'postgresql::server'
+        chef.add_recipe 'redis'
         chef.add_recipe 'warden'
         chef.json = {
           "rvm" => {
