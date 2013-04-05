@@ -31,7 +31,7 @@ fi
 cat <<EOF >Vagrantfile
   Vagrant.configure("2") do |config|
     config.ssh.username = "travis"
-    config.vm.define "$VMNAME"
+    config.vm.define "$VM_NAME"
     config.vm.box = "ci_with_warden_prereqs"
     config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
   end
