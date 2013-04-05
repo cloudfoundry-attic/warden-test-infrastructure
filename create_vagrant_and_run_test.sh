@@ -16,6 +16,9 @@ function lock {
       # lock.
       flock -w $FLOCKTIMEOUT -x 42
       sleep 2
+      # close the file before spawning, otherwise vbox inherits the fd and
+      # holds the lock forever (say 25 mins)
+      exec 42>&-
       $*
     ) 42>$LOCKFILE
   else
