@@ -10,7 +10,13 @@ VMNAME=default
 function lock {
   LOCKFILE=/run/shm/vagrantup.lock
   if which flock ; then
-    flock --close -x $LOCKFILE -c "$*"
+    (
+      # Using the fd form of flock so that we can insert a sleep inside the
+      # lock.
+      flock -w 60 -x 42
+      sleep 2
+      $*
+    ) 42>$LOCKFILE
   else
     $*
   fi
