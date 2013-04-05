@@ -5,6 +5,8 @@ BUILD_TO_RUN_PATH=$1
 TEST_INFRA_PATH=$2
 TMP_FOLDER_PATH=`pwd`
 VM_NAME=default
+WARDENIZED_SERVICE=${WARDENIZED_SERVICE:-}
+REQUIRE_PACKAGE=${REQUIRE_PACKAGE:-}
 
 # best effort to command in critical section
 function lock {
