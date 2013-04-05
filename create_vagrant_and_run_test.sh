@@ -49,7 +49,7 @@ echo "Your vagrant box is now provisioned in folder $TMP_FOLDER_PATH! Don't forg
 echo "To connect: vagrant ssh $VM_NAME"
 echo "To destroy: vagrant destroy $VM_NAME"
 
-if [ -z $NOTEST ]; then
+if [ -z ${NOTEST:=} ]; then
   vagrant ssh $VM_NAME -c "cd ~/workspace &&         \
     env WARDENIZED_SERVICE=$WARDENIZED_SERVICE       \
     REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
