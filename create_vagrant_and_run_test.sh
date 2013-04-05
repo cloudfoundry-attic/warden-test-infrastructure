@@ -4,7 +4,7 @@ set -e -x -u
 BUILD_TO_RUN_PATH=$1
 TEST_INFRA_PATH=$2
 TMP_FOLDER_PATH=`pwd`
-VMNAME=default
+VM_NAME=default
 
 # best effort to command in critical section
 function lock {
