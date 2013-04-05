@@ -1,16 +1,20 @@
 #!/bin/bash
-set -e -x
+set -e -x -u
 
-if [ -z $BUILD_TAG ]; then
-  echo 'Missing $BUILD_TAG variable, assuming we are not running in jenkins'
-  BUILD_TAG=`date +%s`
-  echo "Generated build_tag: #{BUILD_TAG}"
-fi
-
-VM_NAME="vm_for_$BUILD_TAG"
 BUILD_TO_RUN_PATH=$1
 TEST_INFRA_PATH=$2
 TMP_FOLDER_PATH=`pwd`
+VMNAME=default
+
+# best effort to command in critical section
+function lock {
+  LOCKFILE=/run/shm/vagrantup.lock
+  if which flock ; then
+    flock --close -x $LOCKFILE -c "$*"
+  else
+    $*
+  fi
+}
 
 if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
   echo "NO vagrant box found in ~/boxes, you probably need to run create_vagrant_box.sh first!"
@@ -20,13 +24,13 @@ fi
 cat <<EOF >Vagrantfile
   Vagrant.configure("2") do |config|
     config.ssh.username = "travis"
-    config.vm.define "$VM_NAME" # give the VM a unique name
+    config.vm.define "$VMNAME"
     config.vm.box = "ci_with_warden_prereqs"
     config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
   end
 EOF
-cat Vagrantfile
-vagrant up
+
+critical vagrant up
 
 vagrant ssh-config > ssh_config
 ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
