@@ -30,7 +30,7 @@ cat <<EOF >Vagrantfile
   end
 EOF
 
-critical vagrant up
+lock vagrant up
 
 vagrant ssh-config > ssh_config
 ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
