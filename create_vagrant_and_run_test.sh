@@ -13,7 +13,7 @@ function lock {
   LOCKFILE=/run/shm/vagrantup.lock
   FLOCKTIMEOUT=600
   if which flock ; then
-    flock -w $FLOCKTIMEOUT --close -x -c "$*"
+    flock -w $FLOCKTIMEOUT --close -x $LOCKFILE -c "$*"
   else
     $*
   fi
