@@ -9,11 +9,12 @@ VMNAME=default
 # best effort to command in critical section
 function lock {
   LOCKFILE=/run/shm/vagrantup.lock
+  FLOCKTIMEOUT=600
   if which flock ; then
     (
       # Using the fd form of flock so that we can insert a sleep inside the
       # lock.
-      flock -w 60 -x 42
+      flock -w $FLOCKTIMEOUT -x 42
       sleep 2
       $*
     ) 42>$LOCKFILE
