@@ -13,18 +13,7 @@ function lock {
   LOCKFILE=/run/shm/vagrantup.lock
   FLOCKTIMEOUT=600
   if which flock ; then
-    (
-      # Using the fd form of flock so that we can insert a sleep inside the
-      # lock.
-      flock -w $FLOCKTIMEOUT -x 42
-      sleep 2
-      # close the file before spawning, otherwise vbox inherits the fd and
-      # holds the lock forever (> 25 mins)
-      (
-        exec 42>&-
-        $*
-      )
-    ) 42>$LOCKFILE
+    flock -w $FLOCKTIMEOUT --close -x -c "$*"
   else
     $*
   fi
