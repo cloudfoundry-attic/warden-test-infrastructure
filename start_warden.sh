@@ -17,7 +17,7 @@ set -e -u -x
   # sudo apt-get -y install debootstrap quota
 
   cd warden
-  bundle install
+  rvmsudo bundle install
 
   # Download and extract the warden rootfs
   rvmsudo bundle exec rake setup:bin[config/linux.yml]
