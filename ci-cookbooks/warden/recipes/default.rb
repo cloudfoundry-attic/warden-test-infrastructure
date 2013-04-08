@@ -22,7 +22,7 @@ end
 
 execute "setup_warden" do
   cwd "#{WARDEN_PATH}/warden"
-  command "bundle install && bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]"
+  command "gem install bundler && bundle install && bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]"
   action :run
 end
 
