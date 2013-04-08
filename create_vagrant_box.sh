@@ -37,7 +37,7 @@ cat <<EOF > Vagrantfile
       chef.add_recipe 'warden'
       chef.json = {
         "rvm" => {
-          "version" => "latest-1.18",
+          "version" => "1.18.21",
           "default" => "1.9.3",
           "rubies" => [{"name" => "1.9.3"}]
         }
