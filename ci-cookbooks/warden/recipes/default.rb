@@ -4,6 +4,14 @@ ROOT_FS_URL = "http://d31qcsjlqa9q7y.cloudfront.net/lucid64.latest.tgz"
 OLD_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/linux.yml"
 NEW_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/test_vm.yml"
 
+package "apparmor" do
+  action :remove
+end
+
+execute "remove remove all remnants of apparmor" do
+  command "sudo dpkg --purge apparmor"
+end
+
 git WARDEN_PATH do
   repository "git://github.com/cloudfoundry/warden.git"
   revision "0293814d6cc591cc5029e66188495fac7ceed4f2"
@@ -37,5 +45,3 @@ end
 execute "copy resolv.conf from outside container" do
   command "cp /etc/resolv.conf #{ROOT_FS}/etc/resolv.conf"
 end
-
-
