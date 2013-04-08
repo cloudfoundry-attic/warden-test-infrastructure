@@ -2,7 +2,8 @@
 set -e -u -x
 (
   cd /warden/warden
-  rvmsudo bundle exec rake warden:start[config/test_vm.yml] --trace >/dev/null 2>&1 &
+  bundle install
+  rvmsudo bundle exec rake warden:start[config/test_vm.yml] --trace > /dev/null &
 )
 
 # Wait for warden to come up
