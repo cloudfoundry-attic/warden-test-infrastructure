@@ -4,6 +4,10 @@ ROOT_FS_URL = "http://d31qcsjlqa9q7y.cloudfront.net/lucid64.latest.tgz"
 OLD_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/linux.yml"
 NEW_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/test_vm.yml"
 
+package "quota" do
+  action :install
+end
+
 package "apparmor" do
   action :remove
 end
