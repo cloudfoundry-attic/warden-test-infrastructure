@@ -37,7 +37,7 @@ cat <<EOF > Vagrantfile
       chef.add_recipe 'warden'
       chef.json = {
         "rvm" => {
-          "version" => "latest-1.18",
+          "version" => "1.18.21",
           "default" => "1.9.3",
           "rubies" => [{"name" => "1.9.3"}]
         }
@@ -45,11 +45,12 @@ cat <<EOF > Vagrantfile
     end
   end
 EOF
+
 cat Vagrantfile
 vagrant up
-rm -f ~/boxes/ci_with_warden_prereqs.box
-vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
-vagrant box remove ci_with_warden_prereqs virtualbox  # this will fail the first time, that's okay
+rm -f ~/boxes/ci_with_warden_prereqs_2.box
+vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs_2.box
+vagrant box remove ci_with_warden_prereqs_2 virtualbox  # this will fail the first time, that's okay
 vagrant destroy --force
 rm Vagrantfile
 rm -rf .vagrant
