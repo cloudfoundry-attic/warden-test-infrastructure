@@ -1,6 +1,6 @@
 WARDEN_PATH = "/warden"
 ROOT_FS = "/var/warden/rootfs"
-ROOT_FS_URL = "http://d31qcsjlqa9q7y.cloudfront.net/lucid64.latest.tgz"
+ROOT_FS_URL = "http://cfstacks.s3.amazonaws.com/lucid64.dev.tgz"
 OLD_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/linux.yml"
 NEW_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/test_vm.yml"
 
