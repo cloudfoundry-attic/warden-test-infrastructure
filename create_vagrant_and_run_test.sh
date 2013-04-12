@@ -36,8 +36,7 @@ EOF
 lock vagrant up
 
 vagrant ssh-config > ssh_config
-ssh -F ssh_config $VM_NAME 'mkdir -p ~/workspace'
-rsync -rq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/.git/ $VM_NAME:workspace/.git
+rsync -rq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/ $VM_NAME:workspace
 rsync -rq --rsh="ssh -F ssh_config" $TEST_INFRA_PATH/start_warden.sh $VM_NAME:workspace/
 ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout . && git submodule update --init'
 
