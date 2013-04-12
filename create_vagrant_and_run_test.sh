@@ -38,7 +38,6 @@ lock vagrant up
 vagrant ssh-config > ssh_config
 rsync -rq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/ $VM_NAME:workspace
 rsync -rq --rsh="ssh -F ssh_config" $TEST_INFRA_PATH/start_warden.sh $VM_NAME:workspace/
-ssh -F ssh_config $VM_NAME 'cd ~/workspace && git checkout . && git submodule update --init'
 
 echo "Your vagrant box is now provisioned in folder $TMP_FOLDER_PATH! Don't forget to vagrant destroy it eventually."
 echo "To connect: vagrant ssh $VM_NAME"
