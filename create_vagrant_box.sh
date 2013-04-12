@@ -28,7 +28,8 @@ cat <<EOF > Vagrantfile
     config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = ['travis-cookbooks/ci_environment', 'ci-cookbooks']
       chef.add_recipe 'git'
-      chef.add_recipe 'unzip'
+      chef.add_recipe 'golang'
+      chef.add_recipe 'zip'
       chef.add_recipe 'rvm::multi'
       chef.add_recipe 'sqlite'
       chef.add_recipe 'mysql::server'
