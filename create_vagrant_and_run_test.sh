@@ -45,5 +45,8 @@ echo "To destroy: vagrant destroy $VM_NAME"
 
 if [ -z ${NOTEST:=} ]; then
   vagrant ssh $VM_NAME -c "cd ~/workspace &&     \
+    env WARDENIZED_SERVICE=$WARDENIZED_SERVICE   \
+    REQUIRE_PACKAGE=$REQUIRE_PACKAGE             \
+    FOLDER_NAME=$FOLDER_NAME                     \
     ./.travis.run"
 fi
