@@ -43,14 +43,6 @@ execute "download warden rootfs from s3" do
     rm -rf #{ROOT_FS}
     mkdir -p #{ROOT_FS}
     curl -s #{ROOT_FS_URL} | tar xzf - -C #{ROOT_FS}
-    (
-      # In dea_ng, there is a java_with_oome fixture. The java buildpack depends on a buildpack_cache
-      # to exist as well as this single jar file. So, let's fake that out here so that the jar file
-      # can be found when the buildpack runs. Fugly? Yes.
-      mkdir -p #{ROOT_FS}/var/vcap/packages/buildpack_cache
-      cd #{ROOT_FS}/var/vcap/packages/buildpack_cache
-      curl http://repo.springsource.org/milestone/org/cloudfoundry/auto-reconfiguration/0.6.6/auto-reconfiguration-0.6.6.jar
-    )
   BASH
 end
 
