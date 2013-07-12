@@ -10,14 +10,6 @@ fi
 VM_NAME="vm_for_$BUILD_TAG"
 
 mkdir -p ~/boxes
-if [[ ! -d travis-cookbooks ]]; then
-  git clone https://github.com/travis-ci/travis-cookbooks.git
-fi
-(
-  cd travis-cookbooks
-  git fetch https://github.com/travis-ci/travis-cookbooks.git
-  git checkout 77605d7405dd97e1b418965d3d8fa481030d6117
-)
 
 cat <<EOF > Vagrantfile
   Vagrant.configure("2") do |config|
@@ -30,17 +22,20 @@ cat <<EOF > Vagrantfile
       chef.add_recipe 'git'
       chef.add_recipe 'golang'
       chef.add_recipe 'zip'
-      chef.add_recipe 'rvm::multi'
       chef.add_recipe 'sqlite'
+      chef.add_recipe 'libffi'
+      chef.add_recipe 'libreadline'
+      chef.add_recipe 'rubydependencies'
+      chef.add_recipe 'rvm::multi'
       chef.add_recipe 'mysql::server'
       chef.add_recipe 'postgresql::server'
       chef.add_recipe 'redis'
       chef.add_recipe 'warden'
       chef.json = {
         "rvm" => {
-          "version" => "1.18.21",
-          "default" => "1.9.3",
-          "rubies" => [{"name" => "1.9.3"}]
+          "version" => "latest-1.21",
+          "default" => "1.9.3-p448",
+          "rubies" => [{"name" => "1.9.3-p448", "arguments" => "--autolibs=2"}]
         }
       }
     end
