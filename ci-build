@@ -23,8 +23,9 @@ Dir.chdir(tmpdir) do
     Timeout.timeout(BUILD_TIMEOUT_IN_SECONDS) do
       sh("bash -x ./create_vagrant_and_run_test.sh '#{BUILD_TO_RUN_PATH}' '#{TEST_INFRA_PATH}'")
     end
-  rescue Timeout::Error
+  rescue Timeout::Error => e
     puts 'Build took too long, killing the VM'
+    raise e
   ensure
     if ENV["NODESTROY"]
       puts "Skipping vagrant destroy"
