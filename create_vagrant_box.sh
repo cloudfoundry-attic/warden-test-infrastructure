@@ -13,7 +13,7 @@ mkdir -p ~/boxes
 
 cat <<EOF > Vagrantfile
   Vagrant.configure("2") do |config|
-    config.ssh.username = "travis"
+    config.ssh.username = "vagrant"
     config.vm.define "$VM_NAME" # give the VM a unique name
     config.vm.box = "travis-base"
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
