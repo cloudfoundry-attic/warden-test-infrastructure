@@ -13,10 +13,10 @@ mkdir -p ~/boxes
 
 cat <<EOF > Vagrantfile
   Vagrant.configure("2") do |config|
-    config.ssh.username = "travis"
+    config.ssh.username = "vagrant"
     config.vm.define "$VM_NAME" # give the VM a unique name
     config.vm.box = "travis-base"
-    config.vm.box_url = "http://files.travis-ci.org/boxes/bases/precise64_base_v2.box"
+    config.vm.box_url = "http://files.vagrantup.com/precise64.box"
     config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = ['travis-cookbooks/ci_environment', 'ci-cookbooks']
       chef.add_recipe 'git'
