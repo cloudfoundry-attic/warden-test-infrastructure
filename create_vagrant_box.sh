@@ -35,6 +35,10 @@ cat <<EOF > Vagrantfile
           "version" => "latest-1.21",
           "default" => "1.9.3-p448",
           "rubies" => [{"name" => "1.9.3-p448", "arguments" => "--autolibs=2"}]
+        },
+        "travis_build_environment" => {
+          "user" => "vagrant",
+          "home" => "/home/vagrant"
         }
       }
     end
