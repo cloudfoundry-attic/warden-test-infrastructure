@@ -15,7 +15,7 @@ cat <<EOF > Vagrantfile
   Vagrant.configure("2") do |config|
     config.ssh.username = "vagrant"
     config.vm.define "$VM_NAME" # give the VM a unique name
-    config.vm.box = "travis-base"
+    config.vm.box = "precise64"
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
     config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = ['travis-cookbooks/ci_environment', 'ci-cookbooks']
