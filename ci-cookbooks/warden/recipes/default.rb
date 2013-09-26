@@ -32,8 +32,8 @@ ruby_block "configure warden to put its rootfs outside of /tmp" do
 end
 
 execute "setup_warden" do
-  cwd "#{WARDEN_PATH}/warden"
-  command "gem install bundler && bundle install && bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]"
+  # use su to trigger rvm so gems are installed with correct ruby 
+  command "su #{node.travis_build_environment.user} -l -c 'cd #{WARDEN_PATH}/warden && bundle install && rvmsudo bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]'"
   action :run
 end
 
