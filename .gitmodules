@@ -1,3 +1,6 @@
 [submodule "travis-cookbooks"]
 	path = travis-cookbooks
 	url = https://github.com/travis-ci/travis-cookbooks.git
+[submodule "vendor-cookbooks/chef-redis"]
+	path = vendor-cookbooks/chef-redis
+	url = https://github.com/miah/chef-redis
