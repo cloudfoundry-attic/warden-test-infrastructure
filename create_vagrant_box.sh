@@ -30,7 +30,6 @@ cat <<EOF > Vagrantfile
       chef.add_recipe 'mysql::server'
       chef.add_recipe 'postgresql::server'
       chef.add_recipe 'warden'
-      chef.add_recipe 'chef-redis'
       chef.json = {
         "rvm" => {
           "version" => "latest-1.21",
