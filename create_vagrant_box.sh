@@ -47,8 +47,9 @@ cat <<EOF > Vagrantfile
 EOF
 cat Vagrantfile
 vagrant up
-rm -f ~/boxes/ci_with_warden_prereqs.box
-vagrant package $VM_NAME --output ~/boxes/ci_with_warden_prereqs.box
+rm -f ./new_ci_with_warden_prereqs.box
+vagrant package $VM_NAME --output ./new_ci_with_warden_rereqs.box
+mv ./new_ci_with_warden_prereqs.box ~/boxes/ci_with_warden_prereqs.box
 
 set +e # Rest of the code is cleanup so doesn't matter if it fails
 
