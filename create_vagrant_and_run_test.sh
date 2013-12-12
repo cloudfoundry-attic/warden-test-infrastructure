@@ -37,26 +37,26 @@ cat <<EOF >Vagrantfile
 EOF
 
 echo "before vagrant up:"
-echo date
+date
 
 lock vagrant up
 
 echo "after vagrant up:"
-echo date
+date
 
 vagrant ssh-config > ssh_config
 rsync -arq --rsh="ssh -F ssh_config" $BUILD_TO_RUN_PATH/ $VM_NAME:workspace
 rsync -arq --rsh="ssh -F ssh_config" $TEST_INFRA_PATH/start_warden.sh $VM_NAME:workspace/
 
 echo "after rsync stuff"
-echo date
+date
 
 echo "Your vagrant box is now provisioned in folder $TMP_FOLDER_PATH! Don't forget to vagrant destroy it eventually."
 echo "To connect: vagrant ssh $VM_NAME"
 echo "To destroy: vagrant destroy $VM_NAME"
 
 echo "about to ssh to run tests"
-echo date
+date
 
 if [ -z ${NOTEST:=} ]; then
   vagrant ssh $VM_NAME -c "cd ~/workspace &&     \
