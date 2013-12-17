@@ -51,6 +51,7 @@ vagrant up
 NEW_BOX=./new_ci_with_warden_prereqs.box
 
 rm -f $NEW_BOX
+vagrant halt
 vagrant package $VM_NAME --output $NEW_BOX
 mv $NEW_BOX ~/boxes/ci_with_warden_prereqs.box
 
