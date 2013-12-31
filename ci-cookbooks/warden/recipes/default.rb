@@ -16,9 +16,14 @@ execute "remove remove all remnants of apparmor" do
   command "sudo dpkg --purge apparmor"
 end
 
+directory WARDEN_PATH do
+  owner node.travis_build_environment.user
+end
+
 git WARDEN_PATH do
   repository "git://github.com/cloudfoundry/warden.git"
   action :sync
+  user node.travis_build_environment.user
 end
 
 ruby_block "configure warden to put its rootfs outside of /tmp" do
