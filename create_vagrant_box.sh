@@ -57,7 +57,7 @@ mv $NEW_BOX ~/boxes/ci_with_warden_prereqs.box
 
 set +e # Rest of the code is cleanup so doesn't matter if it fails
 
-vagrant box remove ci_with_warden_prereqs virtualbox  # this will fail the first time, that's okay
+vagrant box remove ci_with_warden_prereqs virtualbox || echo "This will fail the first time, that's okay"
 vagrant destroy --force
 rm Vagrantfile
 rm -rf .vagrant
