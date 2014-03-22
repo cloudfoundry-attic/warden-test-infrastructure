@@ -11,41 +11,35 @@ VM_NAME="vm_for_$BUILD_TAG"
 
 mkdir -p ~/boxes
 
+bundle install
+bundle exec librarian-chef install
+
 cat <<EOF > Vagrantfile
-  Vagrant.configure("2") do |config|
-    config.ssh.username = "vagrant"
-    config.vm.define "$VM_NAME" # give the VM a unique name
-    config.vm.box = "precise64"
-    config.vm.box_url = "http://files.vagrantup.com/precise64.box"
-    config.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = ['travis-cookbooks/ci_environment', 'ci-cookbooks']
-      chef.add_recipe 'git'
-      chef.add_recipe 'golang'
-      chef.add_recipe 'zip'
-      chef.add_recipe 'sqlite'
-      chef.add_recipe 'libffi'
-      chef.add_recipe 'libreadline'
-      chef.add_recipe 'rubydependencies'
-      chef.add_recipe 'rvm::multi'
-      chef.add_recipe 'mysql::server'
-      chef.add_recipe 'postgresql::server'
-      chef.add_recipe 'warden'
-      chef.add_recipe 'redis::ppa'
-      chef.json = {
-        "rvm" => {
-          "version" => "latest-1.21",
-          "default" => "1.9.3-p448",
-          "rubies" => [{"name" => "1.9.3-p448", "arguments" => "--autolibs=2"}]
-        },
-        "travis_build_environment" => {
-          "user" => "vagrant",
-          "group" => "vagrant",
-          "home" => "/home/vagrant"
-        }
+Vagrant.configure("2") do |config|
+  config.ssh.username = "vagrant"
+  config.vm.define "$VM_NAME" # give the VM a unique name
+  config.vm.box     = "opscode_ubuntu-13.04_provisionerless"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box"
+  config.omnibus.chef_version = :latest
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ['cookbooks', 'site-cookbooks']
+    chef.add_recipe 'apt'
+    chef.add_recipe 'packages'
+    chef.add_recipe 'chef_rubies'
+    chef.add_recipe 'warden'
+    chef.json = {
+      "rubies" => {
+        "list" => ["1.9.3-p448"],
+        "install_bundler" => true,
+      },
+      "warden" => {
+        "user" => "vagrant",
       }
-    end
+    }
   end
+end
 EOF
+
 cat Vagrantfile
 vagrant up
 

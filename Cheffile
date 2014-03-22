@@ -1,0 +1,13 @@
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'chef_rubies',
+  git: 'https://github.com/ichilton/chef_rubies'
+
+cookbook 'chef_chruby_install',
+  git: 'https://github.com/ichilton/chef_chruby_install'
+
+cookbook 'ruby_install',
+  git: 'https://github.com/rosstimson/chef-ruby_install'
+
+cookbook 'selfsigned_certificate',
+  git: 'https://github.com/cgravier/selfsigned_certificate'

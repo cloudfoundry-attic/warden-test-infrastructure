@@ -1,0 +1,51 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (2.3.8)
+    ark (0.7.0)
+    build-essential (2.0.0)
+    chruby_install (0.1.1)
+      build-essential (>= 0.0.0)
+    yum (3.1.4)
+
+GIT
+  remote: https://github.com/cgravier/selfsigned_certificate
+  ref: master
+  sha: 0f861d0568baa3e0669ddd8951a9c8d51422d532
+  specs:
+    selfsigned_certificate (0.1.0)
+
+GIT
+  remote: https://github.com/ichilton/chef_chruby_install
+  ref: master
+  sha: 206f123678943d6ec56a2e7914eb7bab3f3c6bf5
+  specs:
+    chef_chruby_install (0.1.1)
+      build-essential (>= 0.0.0)
+
+GIT
+  remote: https://github.com/ichilton/chef_rubies
+  ref: master
+  sha: 6568cedef26eb4507bdcc458b709be5bfadfff25
+  specs:
+    chef_rubies (0.1.0)
+      build-essential (>= 0.0.0)
+      chruby_install (>= 0.0.0)
+      ruby_install (>= 0.0.0)
+
+GIT
+  remote: https://github.com/rosstimson/chef-ruby_install
+  ref: master
+  sha: 7817b50f1870ff09376631de12abc41741c81b0a
+  specs:
+    ruby_install (1.0.1)
+      apt (>= 0.0.0)
+      ark (>= 0.0.0)
+      yum (>= 0.0.0)
+
+DEPENDENCIES
+  chef_chruby_install (>= 0)
+  chef_rubies (>= 0)
+  ruby_install (>= 0)
+  selfsigned_certificate (>= 0)
+
