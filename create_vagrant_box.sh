@@ -19,6 +19,7 @@ cat <<EOF > Vagrantfile
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
     config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = ['travis-cookbooks/ci_environment', 'ci-cookbooks']
+      chef.add_recipe 'apt'
       chef.add_recipe 'git'
       chef.add_recipe 'golang'
       chef.add_recipe 'zip'
