@@ -46,16 +46,16 @@ EOF
 cat Vagrantfile
 vagrant up
 
-NEW_BOX=./new_ci_with_warden_prereqs.box
+box_name=warden-compatible
 
-rm -f $NEW_BOX
+rm -f ${box_name}.box
 vagrant halt
-vagrant package $VM_NAME --output $NEW_BOX
-mv $NEW_BOX ~/boxes/ci_with_warden_prereqs.box
+vagrant package $VM_NAME --output ${box_name}.box
+mv $box_name ~/boxes/box_name.box
 
 set +e # Rest of the code is cleanup so doesn't matter if it fails
 
-vagrant box remove ci_with_warden_prereqs virtualbox || echo "This will fail the first time, that's okay"
+vagrant box remove $box_name virtualbox || echo "This will fail the first time, that's okay"
 vagrant destroy --force
 rm Vagrantfile
 rm -rf .vagrant

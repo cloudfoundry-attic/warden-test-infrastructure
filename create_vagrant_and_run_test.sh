@@ -22,7 +22,7 @@ function lock {
   fi
 }
 
-if [[ ! -f ~/boxes/ci_with_warden_prereqs.box ]]; then
+if [[ ! -f ~/boxes/warden-compatible.box ]]; then
   echo "NO vagrant box found in ~/boxes, you probably need to run create_vagrant_box.sh first!"
   exit 1
 fi
@@ -31,8 +31,8 @@ cat <<EOF >Vagrantfile
   Vagrant.configure("2") do |config|
     config.ssh.username = "vagrant"
     config.vm.define "$VM_NAME"
-    config.vm.box = "ci_with_warden_prereqs"
-    config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
+    config.vm.box = "warden-compatible"
+    config.vm.box_url = "~/boxes/warden-compatible.box"
   end
 EOF
 
