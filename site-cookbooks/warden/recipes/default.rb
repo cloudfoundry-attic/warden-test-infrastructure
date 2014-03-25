@@ -17,13 +17,13 @@ execute "remove remove all remnants of apparmor" do
 end
 
 directory WARDEN_PATH do
-  owner node.travis_build_environment.user
+  owner node.warden.user
 end
 
 git WARDEN_PATH do
   repository "git://github.com/cloudfoundry/warden.git"
   action :sync
-  user node.travis_build_environment.user
+  user node.warden.user
 end
 
 ruby_block "configure warden to put its rootfs outside of /tmp" do
@@ -37,8 +37,7 @@ ruby_block "configure warden to put its rootfs outside of /tmp" do
 end
 
 execute "setup_warden" do
-  # use su to trigger rvm so gems are installed with correct ruby 
-  command "su #{node.travis_build_environment.user} -l -c 'cd #{WARDEN_PATH}/warden && bundle install && rvmsudo bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]'"
+  command "su #{node.warden.user} -l -c 'cd #{WARDEN_PATH}/warden && bundle install && bundle exec rake setup:bin[#{NEW_CONFIG_FILE_PATH}]'"
   action :run
 end
 

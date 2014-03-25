@@ -1,3 +1,0 @@
-[submodule "travis-cookbooks"]
-	path = travis-cookbooks
-	url = https://github.com/karlkfi/travis-cookbooks.git

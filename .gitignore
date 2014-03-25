@@ -18,3 +18,4 @@ Vagrantfile
 .yardoc
 _yardoc
 doc/
+cookbooks/
