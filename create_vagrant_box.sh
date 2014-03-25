@@ -50,7 +50,7 @@ box_name=warden-compatible
 rm -f ${box_name}.box
 vagrant halt
 vagrant package $VM_NAME --output ${box_name}.box
-mv $box_name ~/boxes/${box_name}.box
+mv ${box_name}.box ~/boxes/${box_name}.box
 
 set +e # Rest of the code is cleanup so doesn't matter if it fails
 
