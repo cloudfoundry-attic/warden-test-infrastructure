@@ -11,6 +11,7 @@ VM_NAME="vm_for_$BUILD_TAG"
 
 mkdir -p ~/boxes
 
+gem install bundler --no-ri --no-rdoc
 bundle install
 bundle exec librarian-chef install
 
