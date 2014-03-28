@@ -9,8 +9,6 @@ fi
 
 VM_NAME="vm_for_$BUILD_TAG"
 
-mkdir -p ~/boxes
-
 bundle install
 bundle exec librarian-chef install
 
@@ -47,14 +45,11 @@ vagrant up
 
 box_name=warden-compatible
 
-rm -f ${box_name}.box
 vagrant halt
+rm -f ${box_name}.box
 vagrant package $VM_NAME --output ${box_name}.box
-mv ${box_name}.box ~/boxes/${box_name}.box
+vagrant box add ${box_name} ${box_name}.box --force
 
-set +e # Rest of the code is cleanup so doesn't matter if it fails
-
-vagrant box remove $box_name virtualbox || echo "This will fail the first time, that's okay"
 vagrant destroy --force
 rm Vagrantfile
 rm -rf .vagrant
