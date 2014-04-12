@@ -1,0 +1,134 @@
+{
+  "builders": [
+    {
+      "name": "vmware",
+      "type": "vmware-iso",
+      "vm_name": "warden-compatible",
+      "guest_os_type": "ubuntu-64",
+      "headless": "true",
+      "http_directory": "http",
+      "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "iso_checksum": "3aeb42816253355394897ae80d99a9ba56217c0e98e05294b51f0f5b13bceb54",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "tools_upload_flavor": "linux",
+      "boot_command": [
+        "<esc><esc><enter><wait>",
+        "/install/vmlinuz auto",
+        " console-setup/ask_detect=false",
+        " console-setup/layoutcode=us",
+        " console-setup/modelcode=pc105",
+        " debconf/frontend=noninteractive",
+        " debian-installer=en_US",
+        " fb=false",
+        " initrd=/install/initrd.gz",
+        " kbd-chooser/method=us",
+        " keyboard-configuration/layout=USA",
+        " keyboard-configuration/variant=USA",
+        " locale=en_US",
+        " hostname={{ .Name }}",
+        " netcfg/get_domain=vm",
+        " netcfg/get_hostname=vagrant",
+        " noapic",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+        " -- ",
+        "<enter>"
+      ],
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "output_directory": "vmware/output",
+      "disk_size": 40960,
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "1",
+        "cpuid.coresPerSocket": "1"
+      }
+    },
+    {
+      "name": "virtualbox",
+      "type": "virtualbox-iso",
+      "vm_name": "warden-compatible",
+      "guest_os_type": "Ubuntu_64",
+      "headless": "true",
+      "http_directory": "http",
+      "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "iso_checksum": "3aeb42816253355394897ae80d99a9ba56217c0e98e05294b51f0f5b13bceb54",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "boot_command": [
+        "<esc><esc><enter><wait>",
+        "/install/vmlinuz auto",
+        " console-setup/ask_detect=false",
+        " debconf/frontend=noninteractive",
+        " debian-installer=en_US",
+        " fb=false",
+        " initrd=/install/initrd.gz",
+        " kbd-chooser/method=us",
+        " keyboard-configuration/layout=USA",
+        " keyboard-configuration/modelcode=SKIP",
+        " keyboard-configuration/variant=USA",
+        " locale=en_US",
+        " hostname={{ .Name }}",
+        " noapic",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+        " -- ",
+        "<enter>"
+      ],
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "output_directory": "virtualbox/output",
+      "disk_size": 40960,
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ]
+    }
+  ],
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo 'vagrant'|{{.Vars}} sudo -E -S bash '{{.Path}}'",
+    "scripts": [
+      "script/base.sh",
+      "script/networking.sh",
+      "script/sshd.sh",
+      "script/kernel-update.sh",
+      "script/cgroup-memory.sh",
+      "script/kernel-lock.sh",
+      "script/sudoers.sh",
+      "script/vagrant.sh",
+      "script/vmtools.sh"
+    ]
+  },
+  {
+     "type": "chef-solo",
+     "install_command": "wget -qO- --no-check-certificate https://www.opscode.com/chef/install.sh | {{if .Sudo}}sudo{{end}} bash",
+     "cookbook_paths": ["../cookbooks", "../site-cookbooks"],
+     "json": {
+         "go": {
+             "version": "1.2.1"
+         },
+         "rubies": {
+             "list": ["ruby 1.9.3-p484"]
+         },
+         "warden": {
+             "user": "vagrant"
+         }
+     },
+     "run_list": [ "apt", "packages", "golang", "chef_rubies", "warden" ]
+  },
+  {
+    "type": "shell",
+    "execute_command": "echo 'vagrant'|{{.Vars}} sudo -E -S bash '{{.Path}}'",
+    "scripts": [
+      "script/cleanup.sh",
+      "script/zerodisk.sh"
+    ]
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "output": "{{.Provider}}/warden-compatible.box"
+  }]
+}
