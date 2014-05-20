@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# create the vagrant user if it doesn't already exist
+grep -q '^vagrant' /etc/passwd || useradd -U -m -s /bin/bash --groups sudo -p vagrant vagrant
+
 mkdir /home/vagrant/.ssh
 wget --no-check-certificate \
     'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub' \
