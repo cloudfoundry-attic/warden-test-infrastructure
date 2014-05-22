@@ -147,7 +147,7 @@
         "version": "1.2.1"
       },
       "rubies": {
-        "list": ["ruby 1.9.3-p545", "ruby 1.9.3-p484"]
+        "list": ["ruby 1.9.3-p545"]
       },
       "warden": {
         "user": "vagrant"
