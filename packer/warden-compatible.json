@@ -134,6 +134,12 @@
   },
   {
     "type": "shell",
+    "only": ["aws"],
+    "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
+    "script": "script/replace-vagrant-key.sh"
+  },
+  {
+    "type": "shell",
     "only": ["vmware", "virtualbox"],
     "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
     "script": "script/vmtools.sh"
