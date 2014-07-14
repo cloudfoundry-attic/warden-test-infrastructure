@@ -61,5 +61,5 @@ Packer templates to create vagrant boxes to run DEA and Warden tests in.
 ### Create and add `warden-compatible.box`
 
 ```
-./create_vagrant_box.sh virtualbox
+./create_vagrant_box.sh vmware
 ```
