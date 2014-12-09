@@ -11,8 +11,8 @@
     "guest_os_type": "ubuntu-64",
     "headless": "true",
     "http_directory": "http",
-    "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.4-server-amd64.iso",
-    "iso_checksum": "3aeb42816253355394897ae80d99a9ba56217c0e98e05294b51f0f5b13bceb54",
+    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
+    "iso_checksum": "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2",
     "iso_checksum_type": "sha256",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
@@ -56,8 +56,8 @@
     "guest_os_type": "Ubuntu_64",
     "headless": "true",
     "http_directory": "http",
-    "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.4-server-amd64.iso",
-    "iso_checksum": "3aeb42816253355394897ae80d99a9ba56217c0e98e05294b51f0f5b13bceb54",
+    "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
+    "iso_checksum": "946a6077af6f5f95a51f82fdc44051c7aa19f9cfc5f737954845a6050543d7c2",
     "iso_checksum_type": "sha256",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
@@ -159,7 +159,7 @@
         "user": "vagrant"
       }
     },
-    "run_list": [ "apt", "packages", "golang", "chef_rubies", "warden" ]
+    "run_list": [ "apt", "packages", "golang", "rubies", "warden" ]
   },
   {
     "type": "shell",
