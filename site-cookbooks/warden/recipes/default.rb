@@ -1,6 +1,9 @@
 WARDEN_PATH = "/warden"
-ROOT_FS = "/var/warden/rootfs"
-ROOT_FS_URL = "http://cf-runtime-stacks.s3.amazonaws.com/lucid64.dev.tgz"
+ROOT_FS_PATH_LUCID = "/var/warden/rootfs_lucid"
+ROOT_FS_PATH_TRUSTY = "/var/warden/rootfs_trusty"
+ROOT_FS_URL_LUCID =  "http://cf-runtime-stacks.s3.amazonaws.com/lucid64.dev.tgz"
+ROOT_FS_URL_TRUSTY = "http://cf-runtime-stacks.s3.amazonaws.com/trusty64.dev.tgz"
+DEFAULT_ROOT_FS_PATH = ROOT_FS_PATH_LUCID
 OLD_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/linux.yml"
 NEW_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/test_vm.yml"
 
@@ -30,7 +33,7 @@ ruby_block "configure warden to put its rootfs outside of /tmp" do
   block do
     require "yaml"
     config = YAML.load_file(OLD_CONFIG_FILE_PATH)
-    config["server"]["container_rootfs_path"] = ROOT_FS
+    config["server"]["container_rootfs_path"] = DEFAULT_ROOT_FS_PATH
     File.open(NEW_CONFIG_FILE_PATH, 'w') { |f| YAML.dump(config, f) }
   end
   action :create
@@ -41,14 +44,26 @@ execute "setup_warden" do
   action :run
 end
 
-execute "download warden rootfs from s3" do
+execute "download warden trusty rootfs from s3" do
   command <<-BASH
-    rm -rf #{ROOT_FS}
-    mkdir -p #{ROOT_FS}
-    curl -s #{ROOT_FS_URL} | tar xzf - -C #{ROOT_FS}
+    rm -rf #{ROOT_FS_PATH_TRUSTY}
+    mkdir -p #{ROOT_FS_PATH_TRUSTY}
+    curl -s #{ROOT_FS_URL_TRUSTY} | tar xzf - -C #{ROOT_FS_PATH_TRUSTY}
   BASH
 end
 
-execute "copy resolv.conf from outside container" do
-  command "cp /etc/resolv.conf #{ROOT_FS}/etc/resolv.conf"
+execute "download warden lucid rootfs from s3" do
+  command <<-BASH
+    rm -rf #{ROOT_FS_PATH_LUCID}
+    mkdir -p #{ROOT_FS_PATH_LUCID}
+    curl -s #{ROOT_FS_URL_LUCID} | tar xzf - -C #{ROOT_FS_PATH_LUCID}
+  BASH
+end
+
+execute "copy resolv.conf from lucid outside container" do
+  command "cp /etc/resolv.conf #{ROOT_FS_PATH_LUCID}/etc/resolv.conf"
+end
+
+execute "copy resolv.conf from trusty outside container" do
+  command "cp /etc/resolv.conf #{ROOT_FS_PATH_TRUSTY}/etc/resolv.conf"
 end
