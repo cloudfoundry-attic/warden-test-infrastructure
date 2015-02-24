@@ -1,8 +1,8 @@
 WARDEN_PATH = "/warden"
 ROOT_FS_PATH_LUCID = "/var/warden/rootfs_lucid"
-ROOT_FS_PATH_TRUSTY = "/var/warden/rootfs_trusty"
+ROOT_FS_PATH_CFLINUXFS2 = "/var/warden/rootfs_cflinuxfs2"
 ROOT_FS_URL_LUCID =  "http://cf-runtime-stacks.s3.amazonaws.com/lucid64.dev.tgz"
-ROOT_FS_URL_TRUSTY = "http://cf-runtime-stacks.s3.amazonaws.com/trusty64.dev.tgz"
+ROOT_FS_URL_CFLINUXFS2 = "http://cf-runtime-stacks.s3.amazonaws.com/cflinuxfs2.dev.tgz"
 DEFAULT_ROOT_FS_PATH = ROOT_FS_PATH_LUCID
 OLD_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/linux.yml"
 NEW_CONFIG_FILE_PATH = "#{WARDEN_PATH}/warden/config/test_vm.yml"
@@ -44,11 +44,11 @@ execute "setup_warden" do
   action :run
 end
 
-execute "download warden trusty rootfs from s3" do
+execute "download warden cflinuxfs2 rootfs from s3" do
   command <<-BASH
-    rm -rf #{ROOT_FS_PATH_TRUSTY}
-    mkdir -p #{ROOT_FS_PATH_TRUSTY}
-    curl -s #{ROOT_FS_URL_TRUSTY} | tar xzf - -C #{ROOT_FS_PATH_TRUSTY}
+    rm -rf #{ROOT_FS_PATH_CFLINUXFS2}
+    mkdir -p #{ROOT_FS_PATH_CFLINUXFS2}
+    curl -s #{ROOT_FS_URL_CFLINUXFS2} | tar xzf - -C #{ROOT_FS_PATH_CFLINUXFS2}
   BASH
 end
 
@@ -64,6 +64,6 @@ execute "copy resolv.conf from lucid outside container" do
   command "cp /etc/resolv.conf #{ROOT_FS_PATH_LUCID}/etc/resolv.conf"
 end
 
-execute "copy resolv.conf from trusty outside container" do
-  command "cp /etc/resolv.conf #{ROOT_FS_PATH_TRUSTY}/etc/resolv.conf"
+execute "copy resolv.conf from cflinuxfs2 outside container" do
+  command "cp /etc/resolv.conf #{ROOT_FS_PATH_CFLINUXFS2}/etc/resolv.conf"
 end
