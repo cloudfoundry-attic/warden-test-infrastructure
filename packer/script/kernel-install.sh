@@ -1,13 +1,11 @@
 #!/bin/bash -eux
 
-# get package list
-packages=${KERNEL_PACKAGES:-linux-image-generic-lts-saucy linux-headers-generic-lts-saucy}
+export UCF_FORCE_CONFFNEW=YES
+export DEBIAN_FRONTEND=noninteractive
 
-# Use this script to bring the kernel up to date if desired.
-apt-get update
-apt-get install -y $packages
+apt-get -y --force-yes install linux-generic-lts-vivid
 
 # reboot
 echo "Rebooting ..."
 reboot
-sleep 90
+sleep 60

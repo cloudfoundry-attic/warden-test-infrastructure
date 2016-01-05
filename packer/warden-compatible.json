@@ -85,7 +85,7 @@
     "output_directory": "virtualbox/output",
     "disk_size": 40960,
     "vboxmanage": [
-      ["modifyvm", "{{.Name}}", "--memory", "512"],
+      ["modifyvm", "{{.Name}}", "--memory", "1024"],
       ["modifyvm", "{{.Name}}", "--cpus", "1"]
     ]
   },
@@ -126,6 +126,7 @@
       "script/vagrant.sh",
       "script/base.sh",
       "script/sshd.sh",
+      "script/apparmor.sh",
       "script/kernel-install.sh",
       "script/kernel-cleanup.sh",
       "script/cgroup-memory.sh",
@@ -145,27 +146,12 @@
     "script": "script/vmtools.sh"
   },
   {
-    "type": "chef-solo",
-    "install_command": "wget -qO- --no-check-certificate https://www.opscode.com/chef/install.sh | {{if .Sudo}}sudo{{end}} bash",
-    "cookbook_paths": ["../cookbooks", "../site-cookbooks"],
-    "json": {
-      "go": {
-        "version": "1.2.1"
-      },
-      "rubies": {
-        "list": ["ruby 2.1.7"]
-      },
-      "warden": {
-        "user": "vagrant"
-      }
-    },
-    "run_list": [ "apt", "packages", "golang", "rubies", "warden" ]
-  },
-  {
     "type": "shell",
     "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
     "scripts": [
         "script/git.sh",
+        "script/golang.sh",
+        "script/ruby-install.sh",
         "script/cleanup.sh"
     ]
   },

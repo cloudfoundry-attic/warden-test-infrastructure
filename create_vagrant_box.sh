@@ -2,10 +2,6 @@
 set -e -x
 
 (
-
-bundle install
-bundle exec librarian-chef install
-
 cd packer
 
 box_name=warden-compatible
